@@ -1,8 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import { Rawon } from "../../structures/Rawon";
-import { parse } from "path";
-import prism from "prism-media";
 import { Guild, Role, ChannelType } from "discord.js";
+import { execSync } from "child_process";
+import prism from "prism-media";
+import { parse } from "path";
 
 const { FFmpeg } = prism;
 
@@ -135,6 +136,15 @@ export class ClientUtils {
             );
         } catch {
             return "Unknown";
+        }
+    }
+
+    public getCommitHash(ref: string, short = true): string {
+        try {
+            const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
+            return res.toString().trim();
+        } catch {
+            return "???"
         }
     }
 }
