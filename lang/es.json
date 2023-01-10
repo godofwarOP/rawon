@@ -199,6 +199,19 @@
                 "slashRoleDescription": "Mira o cambia la configuración del rol DJ",
                 "slashRoleNewRoleOption": "Nuevo rol DJ"
             },
+            "filter": {
+                "availableFilters": "Filtros disponibles",
+                "currentlyUsedFilters": "Filtros utilizados actualmente",
+                "currentState": "`{filter}` es actualmente `{state}`",
+                "description": "Configurar el filtro de canción",
+                "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
+                "filterSet": "`El filtro {filter}` ya está `{state}`",
+                "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
+                "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
+                "slashStatusDescription": "Comprobar el estado actual de los filtros de canción",
+                "slashStatusFilterDescription": "El filtro de canción que desea comprobar",
+                "specifyFilter": "Por favor, especifique el filtro de canción"
+            },
             "lyrics": {
                 "apiError": "El API no pudo encontrar la letra de la canción **{song}**, razón: {message}",
                 "description": "Muestra la letra de una canción",
