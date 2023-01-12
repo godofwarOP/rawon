@@ -6,7 +6,14 @@ import { LoopMode, QueueSong } from "../typings";
 import { filterArgs } from "../utils/functions/ffmpegArgs";
 import { Rawon } from "./Rawon";
 import i18n from "../config";
-import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, AudioResource, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
+import {
+    AudioPlayer,
+    AudioPlayerPlayingState,
+    AudioPlayerStatus,
+    AudioResource,
+    createAudioPlayer,
+    VoiceConnection
+} from "@discordjs/voice";
 import { TextChannel, Snowflake } from "discord.js";
 
 const nonEnum = { enumerable: false };

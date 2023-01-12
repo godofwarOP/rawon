@@ -13,6 +13,7 @@ import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
 import { resolve } from "path";
 import got from "got";
+import { DatabaseManager } from "../utils/structures/DatabaseManager.js";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -26,6 +27,7 @@ export class Rawon extends Client {
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
     public readonly soundcloud = soundcloud;
+    public readonly database = new DatabaseManager(this);
     public readonly request = got.extend({
         hooks: {
             beforeError: [
@@ -58,6 +60,7 @@ export class Rawon extends Client {
 
     public build: () => Promise<this> = async () => {
         this.startTimestamp = Date.now();
+        this.database.initialize();
         this.events.load();
         await this.login();
         return this;

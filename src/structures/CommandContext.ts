@@ -120,7 +120,7 @@ export class CommandContext {
     }
 
     public isStringSelectMenu(): boolean {
-        return this.context instanceof MessageComponentInteraction;
+        return this.context instanceof StringSelectMenuInteraction;
     }
 
     public isModal(): boolean {
