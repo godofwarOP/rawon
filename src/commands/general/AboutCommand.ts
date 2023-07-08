@@ -25,15 +25,15 @@ const pkg: { version: string } = JSON.parse(
 export class AboutCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
         const systemRamOptions = {
-            free: Math.floor(freemem() / 1e9),
-            total: Math.floor(totalmem() / 1e9)
+            free: Math.floor(freemem() / 1e6),
+            total: Math.floor(totalmem() / 1e6)
         };
         const systemRamUsage = (systemRamOptions.total - systemRamOptions.free).toFixed(0)
         const values = [
             [i18n.__("commands.general.about.osUptimeString"), formatMS(uptime() * 1000)],
             [i18n.__("commands.general.about.processUptimeString"), formatMS(process.uptime() * 1000)],
             [i18n.__("commands.general.about.botUptimeString"), formatMS(process.uptime() * 1000)],
-            ["System Memory", `${systemRamUsage} GB | ${systemRamOptions.free} GB | ${systemRamOptions.total} GB`],
+            ["System Memory", `${systemRamUsage} MB | ${systemRamOptions.free} MB | ${systemRamOptions.total} MB`],
             [""],
             [i18n.__("commands.general.about.cachedUsersString"), `${await this.client.utils.getUserCount()}`],
             [i18n.__("commands.general.about.channelsString"), `${await this.client.utils.getChannelCount()}`],
