@@ -7,7 +7,7 @@ import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
 import { readFileSync } from "node:fs";
-import { uptime } from "node:os";
+import { freemem, totalmem, uptime,  } from "node:os";
 
 const pkg: { version: string } = JSON.parse(
     readFileSync(new URL("../../../package.json", import.meta.url)).toString()
@@ -24,10 +24,16 @@ const pkg: { version: string } = JSON.parse(
 })
 export class AboutCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
+        const systemRamOptions = {
+            free: Math.floor(freemem() / 1e9),
+            total: Math.floor(totalmem() / 1e9)
+        };
+        const systemRamUsage = (systemRamOptions.total - systemRamOptions.free).toFixed(0)
         const values = [
             [i18n.__("commands.general.about.osUptimeString"), formatMS(uptime() * 1000)],
             [i18n.__("commands.general.about.processUptimeString"), formatMS(process.uptime() * 1000)],
             [i18n.__("commands.general.about.botUptimeString"), formatMS(process.uptime() * 1000)],
+            ["System Memory", `${systemRamUsage} GB | ${systemRamOptions.free} GB | ${systemRamOptions.total} GB`],
             [""],
             [i18n.__("commands.general.about.cachedUsersString"), `${await this.client.utils.getUserCount()}`],
             [i18n.__("commands.general.about.channelsString"), `${await this.client.utils.getChannelCount()}`],
