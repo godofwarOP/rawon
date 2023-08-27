@@ -1,5 +1,5 @@
-import { SpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
-import { Rawon } from "../../structures/Rawon";
+import { SpotifyAccessTokenAPIResult, SpotifyAlbum, SpotifyPlaylist, SpotifyTrack } from "../../typings/index.js";
+import { Rawon } from "../../structures/Rawon.js";
 
 export class SpotifyUtil {
     // eslint-disable-next-line prefer-named-capture-group
@@ -7,13 +7,12 @@ export class SpotifyUtil {
     public baseURI = "https://api.spotify.com/v1";
     private token!: string;
 
-    public constructor(public client: Rawon) {}
+    public constructor(public client: Rawon) { }
 
     public async fetchToken(): Promise<number> {
         const { accessToken, accessTokenExpirationTimestampMs } = await this.client.request
             .get("https://open.spotify.com/get_access_token", {
                 headers: {
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     "User-Agent":
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59"
                 }
@@ -39,7 +38,34 @@ export class SpotifyUtil {
             case "playlist": {
                 return this.getPlaylist(id);
             }
+
+            case "album": {
+                return this.getAlbum(id);
+            }
         }
+    }
+
+    public async getAlbum(id: string): Promise<{ track: SpotifyTrack }[]> {
+        const albumResponse = await this.client.request
+            .get(`${this.baseURI}/albums/${id}`, {
+                headers: {
+                    Authorization: this.token
+                }
+            })
+            .json<SpotifyAlbum>();
+        let next = albumResponse.tracks.next;
+        while (next) {
+            const nextPlaylistResponse = await this.client.request
+                .get(next, {
+                    headers: {
+                        Authorization: this.token
+                    }
+                })
+                .json<SpotifyAlbum["tracks"]>();
+            next = nextPlaylistResponse.next;
+            albumResponse.tracks.items.push(...nextPlaylistResponse.items);
+        }
+        return albumResponse.tracks.items.filter(Boolean).map(track => ({ track }));
     }
 
     public async getPlaylist(id: string): Promise<{ track: SpotifyTrack }[]> {

@@ -1,8 +1,8 @@
-import { Song, SearchTrackResult, SpotifyTrack } from "../../../typings";
-import { Rawon } from "../../../structures/Rawon";
-import { checkQuery } from "./checkQuery";
-import { youtube } from "../YouTubeUtil";
-import { getInfo } from "../YTDLUtil";
+import { Song, SearchTrackResult, SpotifyTrack } from "../../../typings/index.js";
+import { Rawon } from "../../../structures/Rawon.js";
+import { checkQuery } from "./checkQuery.js";
+import { youtube } from "../YouTubeUtil.js";
+import { getInfo } from "../YTDLUtil.js";
 import { Playlist, SearchResult, Video, VideoCompact } from "youtubei";
 import { URL } from "node:url";
 
@@ -141,13 +141,12 @@ export async function searchTrack(
                         let bValue = 0;
                         const aDurationDiff = a.duration ? a.duration - track.duration_ms : null;
                         const bDurationDiff = b.duration ? b.duration - track.duration_ms : null;
-                        // "a" variable check
+                        
                         if (a.title.toLowerCase().includes(track.name.toLowerCase())) aValue--;
                         if (track.artists.some(x => a.channel?.name.toLowerCase().includes(x.name))) aValue--;
                         if (a.channel?.name.endsWith("- Topic")) aValue -= 2;
                         if (aDurationDiff ? aDurationDiff <= 5000 && aDurationDiff >= -5000 : false) aValue -= 2;
 
-                        // "b" variable check
                         if (b.title.toLowerCase().includes(track.name.toLowerCase())) bValue++;
                         if (track.artists.some(x => b.channel?.name.toLowerCase().includes(x.name))) bValue++;
                         if (b.channel?.name.endsWith(" - Topic")) bValue += 2;
@@ -198,7 +197,7 @@ export async function searchTrack(
                             songs.map(async (x): Promise<void> => {
                                 let response = await youtube.search(
                                     x.track.external_ids?.isrc ??
-                                        `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
+                                    `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
                                     { type: "video" }
                                 );
                                 if (!response.items.length) {

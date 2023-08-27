@@ -1,10 +1,11 @@
-import { createEmbed } from "../utils/functions/createEmbed";
-import { ServerQueue } from "../structures/ServerQueue";
-import { formatMS } from "../utils/functions/formatMS";
-import { BaseEvent } from "../structures/BaseEvent";
-import { Event } from "../utils/decorators/Event";
-import { QueueSong } from "../typings";
-import i18n from "../config";
+/* eslint-disable class-methods-use-this */
+import { createEmbed } from "../utils/functions/createEmbed.js";
+import { ServerQueue } from "../structures/ServerQueue.js";
+import { formatMS } from "../utils/functions/formatMS.js";
+import { BaseEvent } from "../structures/BaseEvent.js";
+import { Event } from "../utils/decorators/Event.js";
+import { QueueSong } from "../typings/index.js";
+import i18n from "../config/index.js";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { Message, StageChannel, VoiceState, VoiceChannel, ChannelType } from "discord.js";
 
@@ -65,8 +66,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             queue.destroy();
             if (!isIdle) {
                 this.client.logger.info(
-                    `${
-                        this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                    `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
                     } Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`
                 );
                 queue.textChannel
@@ -103,10 +103,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 } catch {
                     queue.destroy();
                     this.client.logger.info(
-                        `${
-                            this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
-                        } Unable to re-configure networking on ${
-                            newState.guild.name
+                        `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                        } Unable to re-configure networking on ${newState.guild.name
                         } voice channel, the queue was deleted.`
                     );
                     void msg.edit({
@@ -126,8 +124,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 if ("error" in suppress) {
                     queue.destroy();
                     this.client.logger.info(
-                        `${
-                            this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                        `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
                         } Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`
                     );
                     void queue.textChannel
@@ -167,7 +164,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         if (newID === queueVC.id && !member?.user.bot && queue.timeout) this.resume(queueVCMembers, queue, newState);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private timeout(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
         if (vcMembers.size !== 0) return;
 
@@ -206,7 +202,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             .then(msg => (queue.lastVSUpdateMsg = msg.id));
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private resume(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
         if (vcMembers.size <= 0) return;
 

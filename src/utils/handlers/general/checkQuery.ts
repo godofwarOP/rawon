@@ -1,4 +1,4 @@
-import { QueryData } from "../../../typings";
+import { QueryData } from "../../../typings/index.js";
 import { URL } from "node:url";
 
 export function checkQuery(string: string): QueryData {
@@ -30,7 +30,7 @@ export function checkQuery(string: string): QueryData {
         if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist") || url.searchParams.has("list")) {
             result.type = "playlist";
         } else if (
-            (/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) ||
+            (/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) ??
             (/youtu\.be/g.exec(url.hostname) && url.pathname !== "")
         ) {
             result.type = "track";
@@ -40,7 +40,7 @@ export function checkQuery(string: string): QueryData {
     } else if (/spotify/g.exec(url.hostname)) {
         result.sourceType = "spotify";
 
-        if (url.pathname.startsWith("/playlist")) {
+        if (["/playlist", "/album"].some((path) => url.pathname.startsWith(path))) {
             result.type = "playlist";
         } else if (url.pathname.startsWith("/track")) {
             result.type = "track";

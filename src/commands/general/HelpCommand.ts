@@ -1,18 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain, @typescript-eslint/no-unnecessary-condition */
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import i18n from "../../config";
-import {
-    Message,
-    ActionRowBuilder,
-    StringSelectMenuBuilder,
-    SelectMenuComponentOptionData,
-    StringSelectMenuInteraction,
-    ApplicationCommandOptionType,
-    ComponentType
-} from "discord.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import i18n from "../../config/index.js";
+import { ActionRowBuilder, ApplicationCommandOptionType, ComponentType, Message, SelectMenuComponentOptionData, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
 
 @Command<typeof HelpCommand>({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
@@ -106,7 +98,6 @@ export class HelpCommand extends BaseCommand {
             );
         }
 
-        // Disable selection menu
         if (ctx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel!.messages
@@ -127,7 +118,6 @@ export class HelpCommand extends BaseCommand {
             }
         }
 
-        // Return information embed
         return ctx.send(
             {
                 embeds: [

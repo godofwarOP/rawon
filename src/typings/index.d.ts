@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { CommandContext } from "../structures/CommandContext";
-import { ServerQueue } from "../structures/ServerQueue";
-import { Rawon } from "../structures/Rawon";
+import { CommandContext } from "../structures/CommandContext.js";
+import { ServerQueue } from "../structures/ServerQueue.js";
+import { Rawon } from "../structures/Rawon.js";
 import { ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, Guild, EmbedBuilder } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
@@ -83,7 +83,6 @@ export interface CategoryMeta {
 }
 
 declare module "discord.js" {
-    // @ts-expect-error Override typings
     export interface Client extends OClient {
         commands: Rawon["commands"];
         request: Rawon["request"];
@@ -152,14 +151,18 @@ export interface SpotifyArtist {
     name: string;
 }
 
-export interface SpotifyPlaylist {
+interface SpotifyData<T> {
     name: string;
     tracks: {
-        items: { track: SpotifyTrack }[];
+        items: T[];
         previous: string | null;
         next: string | null;
     };
 }
+
+export type SpotifyAlbum = SpotifyData<SpotifyTrack>;
+
+export type SpotifyPlaylist = SpotifyData<{ track: SpotifyTrack }>;
 
 export interface SpotifyTrack {
     artists: ArtistsEntity[];

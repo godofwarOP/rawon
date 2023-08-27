@@ -1,10 +1,10 @@
 import { downloadExecutable } from "./yt-dlp-utils";
 import { existsSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { execSync } from "node:child_process";
-import prism from "prism-media";
 import { resolve } from "node:path";
 import { Server } from "node:https";
 import module from "node:module";
+import prism from "prism-media";
 
 const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
 
@@ -119,4 +119,5 @@ if (streamStrategy === "play-dl") {
     }
 }
 console.info("[INFO] Starting the bot...");
+
 import("./dist/index.js");
